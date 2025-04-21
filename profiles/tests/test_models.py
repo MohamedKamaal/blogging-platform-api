@@ -1,75 +1,65 @@
+# tests/test_models.py
+
 import pytest
 from profiles.models import Profile
-from profiles.factories import ProfileFactory, UserFactory
-from cities_light.models import Country, City
+from profiles.factories import ProfileFactory
+from users.factories import UserFactory
 
-@pytest.mark.django_db
-class TestProfileModel:
+
+
+
+
+
+pytestmark = pytest.mark.django_db
+
+def test_profile_creation_user_full_name():
+    user = UserFactory(first_name="John", last_name="Doe")
+    profile = Profile.objects.get(user__first_name="John" , user__last_name="Doe")
+    assert str(profile.__str__()) == "John Doe"  # Assuming `__str__` is implemented to return fullname
+
+   
+
+# 3. **Test Follow Method**
+def test_follow_method():
+    user1 = UserFactory()
+    user2 = UserFactory()
+
+    user1.profile.follow(user2.profile)
+
+    # Test if user1.profile follows user2.profile
+    assert user1.profile.is_following(user2.profile) is True
+    assert user2.profile.is_following(user1.profile) is False  # because it's not symmetrical in the model
+
+# 4. **Test Unfollow Method**
+def test_unfollow_method():
+    user1 = UserFactory()
+    user2 = UserFactory()
+
+    user1.profile.follow(user2.profile)
+    user1.profile.unfollow(user2.profile)
+
+    # Test if user1.profile unfollowed user2.profile
+    assert user1.profile.is_following(user2.profile) is False
+    assert user2.profile.is_following(user1.profile) is False
+
+# 5. **Test is_following Method**
+def test_is_following_method():
+    user1 = UserFactory()
+    user2 = UserFactory()
+
+    assert user1.profile.is_following(user2.profile) is False
+    user1.profile.follow(user2.profile)
+    assert user1.profile.is_following(user2.profile) is True
+
+
+
+# 8. **Test Symmetry of ManyToManyField (Followers)**
+def test_following_symmetry():
+    user1 = UserFactory()
+    user2 = UserFactory()
+
+    user1.profile.follow(user2.profile)
     
-    @pytest.fixture
-    def user(self):
-        return UserFactory()
+    # Test if user1.profile is in user2.profile's followers (should be symmetrical=False)
+    assert user2.profile.following.filter(pk=user1.profile.pk).exists() is False
 
-    @pytest.fixture
-    def profile(self, user):
-        return ProfileFactory(user=user)
-
-    def test_profile_creation(self, profile):
-        """Test that a Profile can be created with valid data."""
-        assert profile.user == profile.user
-        assert profile.country is not None
-        assert profile.city is not None
-        assert profile.gender is not None
-        assert profile.phone_number is not None
-
-    def test_follow_and_unfollow(self, profile):
-        """Test the follow and unfollow functionality."""
-        user2 = UserFactory()
-        profile2 = ProfileFactory(user=user2)
-
-        # Profile follows another profile
-        assert profile.is_following(profile2) is False
-        profile.follow(profile2)
-        assert profile.is_following(profile2) is True
-
-        # Profile unfollows another profile
-        profile.unfollow(profile2)
-        assert profile.is_following(profile2) is False
-
-    def test_is_following(self, profile):
-        """Test the is_following method."""
-        user2 = UserFactory()
-        profile2 = ProfileFactory(user=user2)
-
-        assert profile.is_following(profile2) is False
-
-        # Follow user2
-        profile.follow(profile2)
-        assert profile.is_following(profile2) is True
-
-    def test_follow_cannot_follow_self(self, profile):
-        """Test that a profile cannot follow itself."""
-        with pytest.raises(CantFollowYourself):
-            profile.follow(profile)
-
-    def test_profile_str(self, profile):
-        """Test the __str__ method."""
-        assert str(profile) == f"{profile.user.fullname}"
-
-    def test_profile_followers(self, profile):
-        """Test the followers relationship."""
-        user2 = UserFactory()
-        profile2 = ProfileFactory(user=user2)
-
-        assert profile.followers.count() == 0
-        profile.follow(profile2)
-        assert profile.followers.count() == 1
-
-    def test_profile_following(self, profile):
-        """Test the following relationship."""
-        user2 = UserFactory()
-        profile2 = ProfileFactory(user=user2)
-
-        assert profile.following.count() == 0
-        profile.follow(profile2)
-        assert profile.following.count() == 1

@@ -43,4 +43,4 @@ class Profile(TimeStampedModel):
         return self.following.filter(pkid=profile.pkid).exists()
         
     def __str__(self):
-        return f"{self.user.fullname}"
+        return f"{self.user.full_name}"

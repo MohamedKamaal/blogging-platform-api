@@ -5,21 +5,18 @@ import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import os 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, '.envs','.local','.env'))
-env = environ.Env(
-)
+from decouple import config, Csv
 
 from datetime import timedelta
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s#lep_!q3&(w($mh_botr+awhoom7qb)2&ujb1rnnn^e=8anwm'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
 
 # Application definition
@@ -36,7 +33,7 @@ INSTALLED_APPS = [
     "users",
     "common",
     "profiles",
-    # "articles",
+    "articles",
     "django_countries",
     "phonenumber_field",
     "cities_light",
@@ -129,11 +126,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ELASTICSEARCH_DSL={
-    'default': {
-        'hosts': 'elasticsearch:9200',
-    }
-}
+
 
 ROOT_URLCONF = 'config.urls'
 

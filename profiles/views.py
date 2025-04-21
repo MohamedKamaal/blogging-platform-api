@@ -25,28 +25,28 @@ class ProfileListAPIView(ListAPIView):
 
 class FollowAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
-    def post(self, request, profile_pkid ,*args, **kwargs):
+    def post(self, request, profile_id ,*args, **kwargs):
         own_profile = request.user.profile
-        profile = get_object_or_404(Profile, pkid=profile_pkid)
-        if own_profile.pkid == profile_pkid:
+        profile = get_object_or_404(Profile, id=profile_id)
+        if own_profile.id == profile_id:
             raise CantFollowYourself
         if own_profile.is_following(profile):
-            return Response({"message":f"You are already following {profile.user.fullname}"},status=403)
+            return Response({"message":f"You are already following {profile.user.full_name}"},status=403)
         own_profile.follow(profile)
-        return Response({"message":f"You are now following {profile.user.fullname}"},status=200)
+        return Response({"message":f"You are now following {profile.user.full_name}"},status=200)
         
 class UnFollowAPIView(GenericAPIView):
     permission_classes = [IsAuthenticated]
-    def post(self, request, profile_pkid ,*args, **kwargs):
+    def post(self, request, profile_id ,*args, **kwargs):
         own_profile = request.user.profile
-        profile = get_object_or_404(Profile, pkid=profile_pkid)
-        if own_profile.pkid == profile_pkid:
+        profile = get_object_or_404(Profile, id=profile_id)
+        if own_profile.id == profile_id:
             raise CantFollowYourself
         if own_profile.is_following(profile):
             own_profile.unfollow(profile)
-            return Response({"message":f"You are now unfollowing {profile.user.fullname}"},status=200)
+            return Response({"message":f"You are now unfollowing {profile.user.full_name}"},status=200)
         return Response(
-            {"message": f"You can't unfollow {profile.user.fullname} because you weren't following them in the first place"},
+            {"message": f"You can't unfollow {profile.user.full_name} because you weren't following them in the first place"},
             status=status.HTTP_403_FORBIDDEN,
         )
 

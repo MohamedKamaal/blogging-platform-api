@@ -8,22 +8,7 @@ from phonenumber_field.serializerfields import PhoneNumberField
 User = get_user_model()
 
 
-# class UserSerializer(serializers.ModelSerializer):
-#     gender = serializers.CharField(source="profile.gender")
-#     city = serializers.CharField(source="profile.city")
-#     phone_number = PhoneNumberField(source="profile.phone_number")
-#     photo = serializers.ReadOnlyField(source="profile.photo.url")
 
-#     class Meta:
-#         model = User
-#         fields = ["id","email","first_name","last_name","gender","phone_number","city","photo","country"]
-    
-#     def to_representation(self, instance):
-#         representation = super(UserSerializer,self).to_representation(instance=instance)
-#         if instance.is_superuser:
-#             representation["admin"]=True
-#         return representation
-    
     
 class CustomRegisterSerializer(RegisterSerializer):
     username = None  # Remove the username field
