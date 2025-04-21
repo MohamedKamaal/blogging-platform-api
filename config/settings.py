@@ -32,9 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "drf_yasg",
+
     "users",
-    # "common",
-    # "profiles",
+    "common",
+    "profiles",
     # "articles",
     "django_countries",
     "phonenumber_field",
