@@ -12,7 +12,10 @@ certifi = "==2025.1.31"
 cffi = "==1.17.1"
 charset-normalizer = "==3.4.1"
 colorama = "==0.4.6"
+<<<<<<< HEAD
 dj-rest-auth = "==7.0.1"
+=======
+>>>>>>> feature/users_auth_app
 django = "==5.1.7"
 django-allauth = "==65.5.0"
 django-autoslug = "==1.9.9"
@@ -62,6 +65,12 @@ urllib3 = "==2.3.0"
 watchfiles = "==1.0.4"
 werkzeug = "==3.1.3"
 pytest = "*"
+<<<<<<< HEAD
+=======
+pytest-django = "*"
+pytest-factoryboy = "*"
+dj-rest-auth = "*"
+>>>>>>> feature/users_auth_app
 
 [dev-packages]
 
