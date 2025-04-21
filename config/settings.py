@@ -32,13 +32,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "drf_yasg",
-<<<<<<< HEAD
-    # "users",
-=======
+
     "users",
->>>>>>> feature/users_auth_app
-    # "common",
-    # "profiles",
+    "common",
+    "profiles",
     # "articles",
     "django_countries",
     "phonenumber_field",
@@ -53,13 +50,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_extensions',
     'taggit',
-<<<<<<< HEAD
-    'search',
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
-=======
    
->>>>>>> feature/users_auth_app
 ]
 
 
@@ -174,22 +165,6 @@ PASSWORD_HASHERS = [
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-<<<<<<< HEAD
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("POSTGRES_DB"),
-        'USER': env("POSTGRES_USER"),
-        'PASSWORD': env("POSTGRES_PASSWORD"),
-        'HOST': env("POSTGRES_HOST"),
-        'PORT': env("POSTGRES_PORT"),
-        
-    }
-}
-
-
-=======
->>>>>>> feature/users_auth_app
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -272,9 +247,6 @@ LOGGING = {
 }
 
 
-<<<<<<< HEAD
-# AUTH_USER_MODEL = "users.CustomUser"
-=======
 AUTH_USER_MODEL = "users.CustomUser"
 
 
@@ -286,4 +258,3 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
->>>>>>> feature/users_auth_app

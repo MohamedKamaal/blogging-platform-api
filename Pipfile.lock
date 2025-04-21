@@ -1,11 +1,7 @@
 {
     "_meta": {
         "hash": {
-<<<<<<< HEAD
-            "sha256": "494d5b4f482f0ef471f49afe28f00ec1a2ff75da2ce65060d8cabaeb3da2f100"
-=======
             "sha256": "51de20b654ced36d7c2c760d5c9c85330316b22478accc4634cdeead837fc8ee"
->>>>>>> feature/users_auth_app
         },
         "pipfile-spec": 6,
         "requires": {
@@ -19,9 +15,6 @@
             }
         ]
     },
-<<<<<<< HEAD
-    "default": {},
-=======
     "default": {
         "asgiref": {
             "hashes": [
@@ -172,6 +165,5 @@
             "version": "==2025.1"
         }
     },
->>>>>>> feature/users_auth_app
     "develop": {}
 }
