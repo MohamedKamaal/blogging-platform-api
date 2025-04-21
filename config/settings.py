@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "drf_yasg",
-    # "users",
+    "users",
     # "common",
     # "profiles",
     # "articles",
@@ -49,9 +49,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_extensions',
     'taggit',
-    'search',
-    'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf',
+   
 ]
 
 
@@ -166,19 +164,6 @@ PASSWORD_HASHERS = [
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("POSTGRES_DB"),
-        'USER': env("POSTGRES_USER"),
-        'PASSWORD': env("POSTGRES_PASSWORD"),
-        'HOST': env("POSTGRES_HOST"),
-        'PORT': env("POSTGRES_PORT"),
-        
-    }
-}
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -261,4 +246,14 @@ LOGGING = {
 }
 
 
-# AUTH_USER_MODEL = "users.CustomUser"
+AUTH_USER_MODEL = "users.CustomUser"
+
+
+# settings.py
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
