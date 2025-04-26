@@ -6,4 +6,4 @@ class ArticlesConfig(AppConfig):
     name = 'articles'
     
     def ready(self):
-        import search.signals
+        pass

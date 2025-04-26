@@ -18,30 +18,27 @@ class ArticleOutSerializer(serializers.ModelSerializer):
 
 
 
-
 class RatingSerializer(serializers.ModelSerializer):
-    title = serializers.ReadOnlyField(source="article.title")
+    
     class Meta:
         model = Rating 
-        fields = ["rating","review","title"]
+        fields = ["rating","review","article"]
         
     
 
 class BookmarkSerializer(serializers.ModelSerializer):
-    title = serializers.ReadOnlyField(source="article.title")
+   
     class Meta:
         model = Bookmark 
-        fields = ["rating","review","title"]
+        fields = ["article"]
         
         
 class ClapSerializer(serializers.ModelSerializer):
-    title = serializers.ReadOnlyField(source="article.title")
     class Meta:
         model = Clap 
-        fields = ["title"]
+        fields = ["article"]
 
 class CommentSerializer(serializers.ModelSerializer):
-    title = serializers.ReadOnlyField(source="article.title")
     class Meta:
-        model = Rating 
-        fields = ["article","title","body"]
+        model = Comment 
+        fields = ["article","title","content"]

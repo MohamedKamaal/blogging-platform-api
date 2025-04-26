@@ -18,11 +18,11 @@ class Article(TimeStampedModel):
     image = models.ImageField(_("Article banner"),help_text=_("Upload banner for image"),
                            null=True,blank=True)
     body = models.TextField(_("Article body"),help_text=_("Article body"),
-                           null=True,blank=True)
+                           )
     tags = TaggableManager()
     
     def __str__(self):
-        return self.title
+        return str(self.title)
     
     @property
     def time_reading(self):
@@ -66,13 +66,17 @@ class Rating(TimeStampedModel):
     
     class Meta:
         unique_together= ["user","article"]
-        
+    
+    def __str__(self):
+        return f"Rating {self.rating} for {self.article} by {self.user}"
 
 class Bookmark(TimeStampedModel):
     article = models.ForeignKey(Article,on_delete=models.CASCADE,related_name="bookmarks")
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="bookmarks")
     class Meta:
         unique_together= ["user","article"]
+    def __str__(self):
+         return f"{self.user} bookmarked {self.article.title}"
 
 class Clap(TimeStampedModel):
     article = models.ForeignKey(Article,on_delete=models.CASCADE,related_name="claps")
@@ -80,11 +84,14 @@ class Clap(TimeStampedModel):
     class Meta:
         unique_together= ["user","article"]
     
-
+    def __str__(self):
+        return f"{self.user} clapped for {self.article.title}"
 
 
 class Comment(TimeStampedModel):
    article = models.ForeignKey(Article,on_delete=models.CASCADE,related_name="comments")
-
+   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
    title = models.CharField(max_length=110)
    content = models.TextField()
+   def __str__(self):
+        return  f"Comment '{self.title}' on {self.article} by {self.user}"
