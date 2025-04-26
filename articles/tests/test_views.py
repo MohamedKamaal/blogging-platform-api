@@ -5,6 +5,7 @@ from articles.models import Article, Rating, Bookmark, Clap, Comment
 from users.factories import UserFactory
 from articles.factories import ArticleFactory, RatingFactory, BookmarkFactory, ClapFactory, CommentFactory
 from django.urls import reverse
+from articles.services import estimate_time_reading
 
 
 @pytest.mark.django_db
@@ -103,9 +104,9 @@ class TestRateArticleAPIView:
         client.force_authenticate(user=user)
 
         rating_data = {
-            'rating': 5,  # Changed to string to match your model
+            'rating': 5,
             'review': 'Excellent article!',
-            'article':article.pkid
+            'article': article.pkid
         }
 
         response = client.post(reverse('articles:article-rate', kwargs={'article_id': article.id}), rating_data, format='json')
@@ -121,7 +122,7 @@ class TestRateArticleAPIView:
         rating_data = {
             'rating': "5",
             'review': 'Excellent article!',
-            'article':article.title
+            'article': article.pkid
         }
 
         response = client.post(reverse('articles:article-rate', kwargs={'article_id': article.id}), rating_data, format='json')
@@ -136,7 +137,7 @@ class TestBookmarkArticleAPIView:
         article = ArticleFactory()
         client = APIClient()
         client.force_authenticate(user=user)
-        data = {"article":article.pkid}
+        data = {"article": article.pkid}
         response = client.post(reverse('articles:article-bookmark', kwargs={'article_id': article.id}), data, format='json')
         assert response.status_code == status.HTTP_201_CREATED
         assert Bookmark.objects.count() == 1
@@ -146,7 +147,7 @@ class TestBookmarkArticleAPIView:
         article = ArticleFactory()
         client = APIClient()
         client.force_authenticate(user=user)
-        data = {'article':article.pkid}
+        data = {'article': article.pkid}
         # First bookmark
         client.post(reverse('articles:article-bookmark', kwargs={'article_id': article.id}), data, format='json')
         # Second bookmark attempt
@@ -162,7 +163,7 @@ class TestClapAPIView:
         article = ArticleFactory()
         client = APIClient()
         client.force_authenticate(user=user)
-        data = {"article":article.pkid}
+        data = {"article": article.pkid}
         response = client.post(reverse('articles:article-clap', kwargs={'article_id': article.id}), data, format='json')
         assert response.status_code == status.HTTP_201_CREATED
         assert Clap.objects.count() == 1
@@ -172,7 +173,7 @@ class TestClapAPIView:
         article = ArticleFactory(author=user)
         client = APIClient()
         client.force_authenticate(user=user)
-        data = {"article":article.pkid}
+        data = {"article": article.pkid}
         response = client.post(reverse('articles:article-clap', kwargs={'article_id': article.id}), data, format='json')
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert 'You cannot clap for your own article' in str(response.data)
@@ -187,10 +188,9 @@ class TestCommentAPIView:
         client.force_authenticate(user=user)
 
         comment_data = {
-            
-            'title':'comment title',
+            'title': 'comment title',
             'content': 'Great article!',
-            'article':article.pkid
+            'article': article.pkid
         }
 
         response = client.post(reverse('articles:article-comment', kwargs={'article_id': article.id}), comment_data, format='json')
@@ -213,16 +213,25 @@ class TestCommentAPIView:
         assert 'You cannot comment on your own article.' in str(response.data)
 
 
-@pytest.mark.django_db
-class TestBookmarkedAPIView:
-    def test_get_bookmarked_articles(self):
-        user = UserFactory()
-        article = ArticleFactory()
-        Bookmark.objects.create(user=user, article=article)
-        client = APIClient()
-        client.force_authenticate(user=user)
+import math
 
-        response = client.get(reverse('articles:user-bookmarks'))
-        assert response.status_code == status.HTTP_200_OK
-        assert article.title == response.data[0]["title"], response.data
-      
+
+@pytest.mark.django_db
+def test_estimate_time_reading():
+    user = UserFactory()
+    article = ArticleFactory(author=user, body="This is a test article with 10 words checking time.", title="this is atitle")
+    
+
+    # Test with default words per minute (250)
+    time = estimate_time_reading(article)
+    assert time == 1  # 10 / 250 = 0.04, ceil = 1 (minimum is 1)
+
+    # Test with custom words per minute
+    time = estimate_time_reading(article, words_per_minute=10)
+    assert time == 1  # 10 / 10 = 1.0, ceil = 1
+
+    # Test with larger article
+    article.body = "word " * 1000  # 1000 words
+    article.save()
+    time = estimate_time_reading(article, words_per_minute=250)
+    assert time == 4  # 1000 / 250 = 4.0

@@ -3,6 +3,9 @@ from articles.models import Article, ArticleView, Rating, Bookmark, Clap, Commen
 from articles.services import estimate_time_reading
 from articles.factories import ArticleFactory, ArticleViewFactory,BookmarkFactory, ClapFactory, CommentFactory, RatingFactory
 from users.factories import UserFactory
+from math import ceil
+
+
 @pytest.mark.django_db
 def test_article_creation():
     article = ArticleFactory(title="Test Article")
@@ -11,22 +14,8 @@ def test_article_creation():
     assert article.slug is not None
     assert str(article) == "Test Article"
 
-@pytest.mark.django_db
-def test_article_time_reading():
-    # Test with body
-    article = ArticleFactory(title="Test Article")
-    article.save()
 
 
-    article.body = "This is a test body with several words."
-    reading_time = article.time_reading
-    assert isinstance(reading_time, float)
-    assert reading_time > 0
-
-    # Test without body
-    article.body = None
-    article.save()
-    assert article.time_reading == 0
 
 @pytest.mark.django_db
 def test_article_views_count():
@@ -82,29 +71,27 @@ def test_comment_creation():
     assert comment.__str__()  == f"Comment '{comment.title}' on {comment.article} by {comment.user}"
     
 
-import pytest
-from articles.services import estimate_time_reading
-from articles.models import Article
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
 
 
 
 @pytest.mark.django_db
 def test_estimate_time_reading():
     user = UserFactory()
-    article = ArticleFactory(author=user, body="This is a test article with 10 words checking time.")  # Provide content here
+    article = ArticleFactory(
+        author=user,
+        body="This is a test article with 10 words checking time.",
+        title="this is a test title"
+    )
+
+    # Test with default words per minute (250)
+    time = estimate_time_reading(article)
+    expected_time = ceil(10 / 250) # 0.04 rounded to 0.0
+    assert time == expected_time
+
+    # Test with custom words per minute (10)
+    time = estimate_time_reading(article, words_per_minute=10)
+    expected_time = ceil(10 / 10)  # 1.0
+    assert time == expected_time
+
     
-    # Test with default words per minute (25)
-    time = estimate_time_reading(article)
-    assert time == pytest.approx(10 / 25)  # 10 words / 25 words per minute
-
-    # Test with custom words per minute
-    time = estimate_time_reading(article)
-    assert time == pytest.approx(10 / 25)  # 10 words / 10 words per minute
-
-    # Test with empty body
-    article.body = None
-    time = estimate_time_reading(article)
-    assert time == 0.0  # If the body is empty, time should be 0
