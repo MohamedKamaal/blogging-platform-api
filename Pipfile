@@ -64,9 +64,10 @@ pytest-django = "*"
 pytest-factoryboy = "*"
 dj-rest-auth = "*"
 python-decouple = "*"
-gunicorn = "*"
 psycopg2-binary = "*"
 dj-database-url = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
