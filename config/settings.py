@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ========================
 #  SECURITY CONFIGURATION
 # ========================
-SECRET_KEY = config("SECRET_KEY")
-DEBUG = config("DEBUG", default=False, cast=bool)
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
+SECRET_KEY = config("SECRET_KEY")  # No default for security
+DEBUG = config("DEBUG", default=True, cast=bool)
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv(), default="127.0.0.1,localhost")
 
 # ========================
 #  APPLICATION DEFINITION
@@ -165,6 +165,14 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
+     'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',  # Rate limit by user
+        'rest_framework.throttling.AnonRateThrottle',  # Rate limit by anonymous users (IP)
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '100/day',  # 100 requests per day per user
+        'anon': '10/minute',  # 10 requests per minute for anonymous users
+    },
 }
 
 # ========================

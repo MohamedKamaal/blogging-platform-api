@@ -3,10 +3,18 @@ from django.contrib.auth import get_user_model
 from articles.models import Article, ArticleView, Rating, Bookmark, Clap, Comment
 from users.factories import UserFactory
 
+
 User = get_user_model()
 
 
 class ArticleFactory(factory.django.DjangoModelFactory):
+    """Factory for creating Article test instances.
+    
+    Generates articles with:
+    - Sequentially numbered titles ('Test Article 1', 'Test Article 2', etc.)
+    - Random paragraph content (10 sentences)
+    - Associated author from UserFactory
+    """
     """Factory for creating Article test instances.
     
     Generates articles with:
@@ -31,6 +39,13 @@ class ArticleViewFactory(factory.django.DjangoModelFactory):
     - Associated user from UserFactory
     - Default IP address '127.0.0.1'
     """
+    """Factory for creating ArticleView test instances.
+    
+    Generates view records with:
+    - Associated article from ArticleFactory
+    - Associated user from UserFactory
+    - Default IP address '127.0.0.1'
+    """
     class Meta:
         model = ArticleView
 
@@ -39,7 +54,16 @@ class ArticleViewFactory(factory.django.DjangoModelFactory):
     viewer_ip = '127.0.0.1'
 
 
+
 class RatingFactory(factory.django.DjangoModelFactory):
+    """Factory for creating Rating test instances.
+    
+    Generates ratings with:
+    - Associated article from ArticleFactory
+    - Associated user from UserFactory
+    - Default rating of '5' (Excellent)
+    - Random review sentence
+    """
     """Factory for creating Rating test instances.
     
     Generates ratings with:
@@ -57,7 +81,14 @@ class RatingFactory(factory.django.DjangoModelFactory):
     review = factory.Faker('sentence')
 
 
+
 class BookmarkFactory(factory.django.DjangoModelFactory):
+    """Factory for creating Bookmark test instances.
+    
+    Generates bookmarks with:
+    - Associated article from ArticleFactory
+    - Associated user from UserFactory
+    """
     """Factory for creating Bookmark test instances.
     
     Generates bookmarks with:
@@ -71,7 +102,14 @@ class BookmarkFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
 
+
 class ClapFactory(factory.django.DjangoModelFactory):
+    """Factory for creating Clap test instances.
+    
+    Generates claps with:
+    - Associated article from ArticleFactory
+    - Associated user from UserFactory
+    """
     """Factory for creating Clap test instances.
     
     Generates claps with:
@@ -85,7 +123,16 @@ class ClapFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
 
+
 class CommentFactory(factory.django.DjangoModelFactory):
+    """Factory for creating Comment test instances.
+    
+    Generates comments with:
+    - Associated article from ArticleFactory
+    - Associated user from UserFactory
+    - Random sentence as title
+    - Random paragraph as content
+    """
     """Factory for creating Comment test instances.
     
     Generates comments with:

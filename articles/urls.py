@@ -8,7 +8,18 @@ from articles.views import (
     ClapAPIView,
     CommentAPIView
 )
+from django.urls import path
+from articles.views import (
+    ArticleCreateAPIView,
+    ArticleRetrieveUpdateDestroy,
+    RateArticleAPIView,
+    BookmarkArticleAPIView,
+    BookmarkedAPIView,
+    ClapAPIView,
+    CommentAPIView
+)
 
+app_name = "articles"
 app_name = "articles"
 
 urlpatterns = [
