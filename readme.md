@@ -1,107 +1,92 @@
-Medium-like Platform API
-Django
-DRF
-PostgreSQL
 
-A RESTful API for a Medium-like blogging platform with user profiles, articles, and social features.
+# Blogging Rest API
+A blogging REST API that enables users to register, log in, and interact with articles by viewing, creating, rating, commenting, clapping, and bookmarking them. Additionally, users can follow others, view their followers and following lists, and engage in a community of bloggers.
 
-Features
-User Authentication
 
-Email-based registration and login
 
-JWT token authentication
+## Features
 
-Password reset functionality
+- **User Registration and Authentication**  
+  Users can register with their email, set a password, and log in to access the platform. JWT tokens are used for secure authentication.
 
-Profile Management
+- **User Profile Management**  
+  Each user has a profile with their first name, last name, and email. Users can update their profile information.
 
-User profiles with bio, profile pictures
+- **Article Management**  
+  - **View Articles**: Users can browse articles posted by others.
+  - **Create Articles**: Authenticated users can create new blog posts, including titles, content, and optional tags.
+  - **Edit/Delete Articles**: Users can edit or delete their own articles.
 
-Follow/unfollow system
+- **Interaction with Articles**  
+  - **Rate Articles**: Users can give a rating to articles.
+  - **Clap for Articles**: Users can "clap" for articles they like, showing appreciation.
+  - **Bookmark Articles**: Users can bookmark articles for easy access later.
+  - **Comment on Articles**: Users can leave comments on articles to interact with the content.
 
-Follower/following lists
+- **User Interaction**  
+  - **Follow/Unfollow Users**: Users can follow others to see their articles in their feed.
+  - **Followers and Following Lists**: Users can view who is following them and who they are following.
 
-Article System
+- **Admin Features**  
+  - **Manage Users and Articles**: Admins can manage users and articles, including the ability to delete inappropriate content or block malicious users.
 
-Create, read, update, and delete articles
+- **Rate Limiting**  
+  The API uses rate throttling to limit the number of requests a user can make in a given time frame, helping prevent abuse and ensuring system stability.
 
-Article views tracking
+- **Unit Tests**  
+  Comprehensive unit tests are included, leveraging tools like **pytest** and **Factory Boy** for mock data and efficient testing of API endpoints and user interactions.
 
-Clapping system
+- **Pagination**  
+  Articles, comments, and user lists are paginated to improve performance when handling large datasets.
 
-Comments and ratings
 
-Admin Interface
+## Tech Stack
 
-Custom Django admin interface
+**Backend:**
+- Django Rest Framework
+- JWT
+- PostgreSQL
+- pytest
+- Factory Boy
 
-User and content management
+**Deployment:**
+- Render
 
-API Documentation
-Interactive API documentation available at:
+## Installation
 
-Swagger UI: /swagger/
+Follow these steps to get the project running locally:
 
-ReDoc: /redoc/
+### 1. Clone the repository
 
-Installation
-Clone the repository:
-
-bash
-git clone https://github.com/yourusername/medium-like-api.git
-cd medium-like-api
-Create and activate virtual environment:
-
-bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-Install dependencies:
-
-bash
+```bash
+git clone https://github.com/MohamedKamaal/blogging-platform-api
+cd blog
 pip install -r requirements.txt
-Configure environment variables:
-Create a .env file based on .env.example and set your configuration.
+```
 
-Run migrations:
-
-bash
+### 2. Apply database migrations
+```bash
+python manage.py makemigrations
 python manage.py migrate
-Create superuser:
-
-bash
-python manage.py createsuperuser
-Run development server:
-
-bash
+```
+### 3. Run the development server
+```bash
 python manage.py runserver
-Project Structure
-medium-like-api/
-├── articles/              # Article-related functionality
-├── profiles/              # User profile functionality
-├── users/                 # Custom user model and auth
-├── manage.py              # Django management script
-├── requirements.txt       # Project dependencies
-└── README.md              # This file
+```
+### 4. Access API documentation
+```bash
+http://localhost:8000/redoc/
+```
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  pytest 
+```
 
 
-Testing
-Run tests with:
+## Demo
 
-bash
-python manage.py test
-
-
-
-
-Create your feature branch (git checkout -b feature/AmazingFeature)
-
-Commit your changes (git commit -m 'Add some AmazingFeature')
-
-Push to the branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
-
-License
-Distributed under the MIT License. See LICENSE for more information.
+Insert gif or link to demo
 
