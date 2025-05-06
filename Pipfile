@@ -68,6 +68,7 @@ psycopg2-binary = "*"
 dj-database-url = "*"
 gunicorn = "*"
 whitenoise = "*"
+pipenv-to-requirements = "*"
 
 [dev-packages]
 

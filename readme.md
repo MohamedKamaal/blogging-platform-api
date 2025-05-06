@@ -88,5 +88,7 @@ To run tests, run the following command
 
 ## Demo
 
-Insert gif or link to demo
+
+https://blogging-platform-api-3xqk.onrender.com/
+
 
