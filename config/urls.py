@@ -56,6 +56,11 @@ urlpatterns = [
         schema_view.with_ui("redoc", cache_timeout=0),
         name="schema-redoc"
     ),
+    path(
+        "/",
+        schema_view.with_ui("redoc", cache_timeout=0),
+        name="schema-redoc"
+    ),
 ]
 
 # Debug toolbar URLs (only in development)
